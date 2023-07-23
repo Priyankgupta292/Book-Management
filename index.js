@@ -38,7 +38,7 @@ function adddetailstolist(title,author,isbn){
     tr.innerHTML= `<td>${title}</td>
     <td>${author}</td>
     <td>${isbn}</td>
-    <td><a href="#" class="btn btn-danger btn-right">X</a></td>
+    <td><a href="#" class="btn btn-danger btn-right delete">X</a></td>
     `
     tbody.appendChild(tr);
     
@@ -61,8 +61,32 @@ window.addEventListener("DOMContentLoaded",()=>{
     // console.log(a);
     // a.forEach(item=>console.log(item))
     a.forEach(item=>adddetailstolist(item.title,item.author,item.isbn));
+});
+
+
+// the code for the delete event
+
+tbody.addEventListener("click",(e)=>{
+    if(e.target.classList.contains("delete")){
+      
+        if(confirm("Are you Sure")){
+            let node=e.target.parentNode
+            RemoveFromLocalStorage(node);
+            tbody.removeChild(e.target.parentNode.parentNode);
+            
+            
+        }
+    }
 })
 
-
+function RemoveFromLocalStorage(node){
+    // console.log(node.previousElementSibling.textContent);
+    let isbnval=node.previousElementSibling.textContent;
+    let a=getfromlocalstorage();
+    let newa=a.filter((item)=>{
+        return item.isbn!=isbnval.toString();
+    })
+    localStorage.setItem('books',JSON.stringify(newa));
+}
 
  
